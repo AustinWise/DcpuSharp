@@ -5,6 +5,7 @@ using System.Text;
 using Austin.DcpuSharp;
 using System.Globalization;
 using System.Threading;
+using System.Diagnostics;
 
 namespace Austin.DcpuTest
 {
@@ -27,13 +28,21 @@ namespace Austin.DcpuTest
             Console.WriteLine(cpu.Status());
             Console.WriteLine();
 
-            while (true)
+            int ticks = 0;
+            var st = Stopwatch.StartNew();
+            while (ticks < 10000000)
             {
                 cpu.Tick();
                 Console.WriteLine(cpu.Status());
                 Console.WriteLine();
                 Thread.Sleep(250);
+                ticks++;
             }
+            st.Stop();
+
+            //Console.WriteLine(st.ElapsedMilliseconds);
+
+            //Console.WriteLine(ticks / (double)st.ElapsedMilliseconds * 1000);
         }
     }
 }

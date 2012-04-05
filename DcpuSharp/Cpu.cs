@@ -50,6 +50,17 @@ namespace Austin.DcpuSharp
             }
         }
 
+        private void Skip()
+        {
+            //Use GetInstr to get the side effect of advancing the PC,
+            //but don't let the SP change.
+            Value a, b;
+            int op;
+            ushort temp = SP;
+            GetInstr(out op, out a, out b);
+            SP = (ushort)temp;
+        }
+
         public void Tick()
         {
             int op;
@@ -87,34 +98,64 @@ namespace Austin.DcpuSharp
                         Overflow = temp > 0xffff ? (ushort)0xffff : (ushort)0;
                         break;
                     case 0x4: //MUL
+                        temp = (uint)(a.Get() * b.Get());
+                        a.Set((ushort)temp);
+                        Overflow = (ushort)((temp >> 16) & 0xffff);
+                        break;
                     case 0x5: //DIV
+                        if (b.Get() == 0)
+                        {
+                            a.Set(0);
+                            Overflow = 0;
+                        }
+                        else
+                        {
+                            a.Set((ushort)(a.Get() / b.Get()));
+                            Overflow = (ushort)(((a.Get() << 16) / b.Get()) & 0xffff);
+                        }
+                        break;
                     case 0x6: //MOD
-                        throw new NotImplementedException();
+                        if (b.Get() == 0)
+                            a.Set(0);
+                        else
+                            a.Set((ushort)(a.Get() % b.Get()));
+                        break;
                     case 0x7: //SHL
                         temp = (uint)(a.Get() << b.Get());
                         Overflow = (ushort)((temp >> 16) & 0xffff);
                         a.Set((ushort)temp);
                         break;
                     case 0x8: //SHR
+                        a.Set((ushort)(a.Get() >> b.Get()));
+                        Overflow = (ushort)(((a.Get() << 16) >> b.Get()) & 0xffff);
+                        break;
                     case 0x9: //AND
+                        a.Set((ushort)(a.Get() & b.Get()));
+                        break;
                     case 0xa: //BOR
+                        a.Set((ushort)(a.Get() | b.Get()));
+                        break;
                     case 0xb: //XOR
+                        a.Set((ushort)(a.Get() ^ b.Get()));
+                        break;
                     case 0xc: //IFE
-                        throw new NotImplementedException();
+                        if (!(a.Get() == b.Get()))
+                            Skip();
+                        break;
                     case 0xd: //IFN
                         if (!(a.Get() != b.Get()))
-                        {
-                            //Use GetInstr to get the side effect of advancing the PC,
-                            //but don't let the SP change.
-                            temp = SP;
-                            GetInstr(out op, out a, out b);
-                            SP = (ushort)temp;
-                        }
+                            Skip();
                         break;
                     case 0xe: //IFG
+                        if (!(a.Get() > b.Get()))
+                            Skip();
+                        break;
                     case 0xf: //IFB
+                        if (!((a.Get() & b.Get()) != 0))
+                            Skip();
+                        break;
                     default:
-                        throw new NotImplementedException();
+                        throw new Exception("Should not get to here.");
                 }
             }
         }
