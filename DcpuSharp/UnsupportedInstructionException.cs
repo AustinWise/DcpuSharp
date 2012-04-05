@@ -7,7 +7,7 @@ namespace Austin.DcpuSharp
 {
     public class UnsupportedInstructionException : NotSupportedException
     {
-        public UnsupportedInstructionException(ushort instr)
+        public UnsupportedInstructionException(int instr)
             : base("This instruction in is not supported: 0x" + instr.ToString("x"))
         {
         }

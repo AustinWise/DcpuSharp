@@ -19,7 +19,7 @@ namespace Austin.DcpuSharp
         private readonly ushort[] Registers = new ushort[8];
         private static readonly string[] RegisterNames = new string[] { "A", "B", "C", "X", "Y", "Z", "I", "J" };
         private ushort PC = 0;
-        private ushort SP = 0xffff;
+        private ushort SP = 0;
         private ushort Overflow = 0;
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace Austin.DcpuSharp
                         PC = a.Get();
                         break;
                     default:
-                        throw new UnsupportedInstructionException(0); //TODO: fix this
+                        throw new UnsupportedInstructionException(op);
                 }
             }
             else
