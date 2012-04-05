@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Austin.DcpuSharp;
 using System.Globalization;
+using System.Threading;
 
 namespace Austin.DcpuTest
 {
@@ -23,9 +24,15 @@ namespace Austin.DcpuTest
 
             var cpu = new Cpu(mem.ToArray());
 
+            Console.WriteLine(cpu.Status());
+            Console.WriteLine();
+
             while (true)
             {
                 cpu.Tick();
+                Console.WriteLine(cpu.Status());
+                Console.WriteLine();
+                Thread.Sleep(250);
             }
         }
     }

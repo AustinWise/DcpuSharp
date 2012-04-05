@@ -17,7 +17,7 @@ namespace Austin.DcpuSharp
 
         private readonly ushort[] Memory = new ushort[0x10000];
         private readonly ushort[] Registers = new ushort[8];
-        private static readonly char[] RegisterNames = new char[] { 'A', 'B', 'C', 'X', 'Y', 'Z', 'I', 'J' };
+        private static readonly string[] RegisterNames = new string[] { "A", "B", "C", "X", "Y", "Z", "I", "J" };
         private ushort PC = 0;
         private ushort SP = 0xffff;
         private ushort Overflow = 0;
@@ -117,6 +117,28 @@ namespace Austin.DcpuSharp
                         throw new NotImplementedException();
                 }
             }
+        }
+
+        public string Status()
+        {
+            var sb = new StringBuilder();
+
+            foreach (var name in RegisterNames.Concat(new[] { "PC", "SP", "O" }))
+            {
+                sb.AppendFormat("{0,5}", name);
+            }
+            sb.AppendLine();
+
+            const string numberFormat = "{0,5:x}";
+            for (int i = 0; i < Registers.Length; i++)
+            {
+                sb.AppendFormat(numberFormat, Registers[i]);
+            }
+            sb.AppendFormat(numberFormat, PC);
+            sb.AppendFormat(numberFormat, SP);
+            sb.AppendFormat(numberFormat, Overflow);
+
+            return sb.ToString();
         }
     }
 }

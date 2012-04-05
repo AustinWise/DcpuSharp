@@ -119,19 +119,28 @@ namespace Austin.DcpuSharp
 
             public override string ToString()
             {
+                var sb = new StringBuilder();
                 if (SaveLoc == SaveLocation.Memory)
                 {
                     if (Buffer.Length == 8)
                     {
-                        return "Register: " + RegisterNames[Index];
+                        sb.Append("Register: ");
+                        sb.Append(RegisterNames[Index]);
                     }
-                    return string.Format("Memory: 0x{0:x}", Index);
+                    else
+                    {
+                        sb.AppendFormat("Memory: 0x{0:x}", Index);
+                    }
                 }
-                else if (SaveLoc == SaveLocation.Literal)
+                else
                 {
-                    return string.Format("Literal: 0x{0:x}", Literal);
+                    sb.Append(SaveLoc.ToString());
                 }
-                return SaveLoc.ToString();
+
+                if (SaveLoc != SaveLocation.None)
+                    sb.AppendFormat(" Value: 0x{0:x}", Get());
+
+                return sb.ToString();
             }
         }
     }
