@@ -29,7 +29,7 @@ namespace Austin.DcpuSharp
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <returns>true if basic, false otherwise</returns>
-        private bool GetInstr(out int op, out Value a, out Value b)
+        private bool GetInstr(out int op, out InternalValue a, out InternalValue b)
         {
             ushort instr = Memory[PC++];
             if ((instr & 0xf) == 0)
@@ -37,7 +37,7 @@ namespace Austin.DcpuSharp
                 //non-basic
                 op = (instr >> 4) & 0x3f;
                 a = CreateValue((ushort)(instr >> 10));
-                b = default(Value);
+                b = default(InternalValue);
                 return false;
             }
             else
@@ -54,7 +54,7 @@ namespace Austin.DcpuSharp
         {
             //Use GetInstr to get the side effect of advancing the PC,
             //but don't let the SP change.
-            Value a, b;
+            InternalValue a, b;
             int op;
             ushort temp = SP;
             GetInstr(out op, out a, out b);
@@ -64,7 +64,7 @@ namespace Austin.DcpuSharp
         public void Tick()
         {
             int op;
-            Value a, b;
+            InternalValue a, b;
             if (!GetInstr(out op, out a, out b))
             {
                 //non-basic

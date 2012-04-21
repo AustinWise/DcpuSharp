@@ -7,37 +7,37 @@ namespace Austin.DcpuSharp
 {
     partial class Cpu
     {
-        private Value CreateValue(ushort ndx)
+        private InternalValue CreateValue(ushort ndx)
         {
             if (ndx < 0x08)
-                return new Value(Registers, ndx);
+                return new InternalValue(Registers, ndx);
             if (ndx < 0x10)
-                return new Value(Memory, Registers[ndx - 0x8]);
+                return new InternalValue(Memory, Registers[ndx - 0x8]);
             if (ndx < 0x18)
-                return new Value(Memory, (ushort)(Memory[PC++] + Registers[ndx - 0x10]));
+                return new InternalValue(Memory, (ushort)(Memory[PC++] + Registers[ndx - 0x10]));
             switch (ndx)
             {
                 case 0x18:
-                    return new Value(Memory, SP++); //POP
+                    return new InternalValue(Memory, SP++); //POP
                 case 0x19:
-                    return new Value(Memory, SP); //PEEK
+                    return new InternalValue(Memory, SP); //PEEK
                 case 0x1a:
-                    return new Value(Memory, --SP); //PUSH
+                    return new InternalValue(Memory, --SP); //PUSH
                 case 0x1b:
-                    return new Value(SaveLocation.SP, this);
+                    return new InternalValue(SaveLocation.SP, this);
                 case 0x1c:
-                    return new Value(SaveLocation.PC, this);
+                    return new InternalValue(SaveLocation.PC, this);
                 case 0x1d:
-                    return new Value(SaveLocation.Overflow, this);
+                    return new InternalValue(SaveLocation.Overflow, this);
                 case 0x1e:
-                    return new Value(Memory, Memory[PC++]);
+                    return new InternalValue(Memory, Memory[PC++]);
                 case 0x1f:
-                    return new Value(Memory[PC++]);
+                    return new InternalValue(Memory[PC++]);
                 default:
                     break;
             }
             if (ndx < 0x40)
-                return new Value((ushort)(ndx - 0x20));
+                return new InternalValue((ushort)(ndx - 0x20));
             throw new ArgumentOutOfRangeException();
         }
 
@@ -51,9 +51,9 @@ namespace Austin.DcpuSharp
             Overflow,
         }
 
-        struct Value
+        struct InternalValue
         {
-            public Value(ushort[] buffer, ushort index)
+            public InternalValue(ushort[] buffer, ushort index)
             {
                 this.Buffer = buffer;
                 this.Index = index;
@@ -62,7 +62,7 @@ namespace Austin.DcpuSharp
                 this.MyCpu = null;
             }
 
-            public Value(SaveLocation loc, Cpu cpu)
+            public InternalValue(SaveLocation loc, Cpu cpu)
             {
                 this.Buffer = null;
                 this.Index = 0;
@@ -71,7 +71,7 @@ namespace Austin.DcpuSharp
                 this.MyCpu = cpu;
             }
 
-            public Value(ushort lit)
+            public InternalValue(ushort lit)
             {
                 this.Buffer = null;
                 this.Index = 0;
