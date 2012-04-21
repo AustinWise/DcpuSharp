@@ -1,7 +1,7 @@
 DCPU Sharp
 ----------
 [DcpuSharp] is an implementation of the [DCPU-16] processor in C#.  It is first intended to provide a programatic
-way for simulating DCPU-16 programs.  These is a EXE project called DcpuTest that runs the sample program.
+way for simulating DCPU-16 programs.  There is a EXE project called DcpuTest that runs the sample program.
 Here is how you run the CPU:
 
             ushort[] memory = new ushort[] { /*...*/ };
