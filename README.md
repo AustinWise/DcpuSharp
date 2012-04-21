@@ -2,7 +2,9 @@ DCPU Sharp
 ----------
 [DcpuSharp] is an implementation of the [DCPU-16] processor in C#.  It is first intended to provide a programatic
 way for simulating DCPU-16 programs.  There is a EXE project called DcpuTest that runs the sample program.
-Here is how you run the CPU:
+
+When creating the Cpu object, it must be given the inital contents of memory.
+One instruction is executed for each call to Tick().
 
             ushort[] memory = new ushort[] { /*...*/ };
             var cpu = new Cpu(memory);
@@ -38,6 +40,7 @@ Plans for future devlopment
  - An API for emiting instructions.  The goal is for the API to feel similar to System.Reflection.Emit.
  - An assembler that uses the emit API.
  - Support for I/O.
+ - Support for counting cycles.
 
 
   [DcpuSharp]: https://github.com/AustinWise/DcpuSharp
