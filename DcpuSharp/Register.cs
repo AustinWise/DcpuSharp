@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Austin.DcpuSharp
 {
-    enum Register
+    public enum Register : byte
     {
-        A,
+        A = 0,
         B,
         C,
         X,
@@ -16,8 +16,8 @@ namespace Austin.DcpuSharp
         I,
         J,
 
-        SP,
-        PC,
-        O
+        SP = 0x1b,
+        PC = 0x1c,
+        O = 0x1d,
     }
 }

@@ -7,7 +7,8 @@ namespace Austin.DcpuSharp
 {
     class CodeWriter
     {
-        public void Emit(OpCode op)
+        private ushort[] mMemory = new ushort[0x10000];
+        public void EmitBasic(OpCode op, Value a, Value b)
         {
         }
     }
