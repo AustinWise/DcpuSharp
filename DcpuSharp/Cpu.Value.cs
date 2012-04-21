@@ -80,6 +80,8 @@ namespace Austin.DcpuSharp
                 this.MyCpu = null;
             }
 
+            //Save loc, literal, and index could be combined into one int.
+            //That might speed up things or lower memory useage
             private SaveLocation SaveLoc;
             private ushort[] Buffer;
             private ushort Index;

@@ -28,21 +28,13 @@ namespace Austin.DcpuTest
             Console.WriteLine(cpu.Status());
             Console.WriteLine();
 
-            int ticks = 0;
-            var st = Stopwatch.StartNew();
-            while (ticks < 10000000)
+            while (true)
             {
                 cpu.Tick();
                 Console.WriteLine(cpu.Status());
                 Console.WriteLine();
                 Thread.Sleep(250);
-                ticks++;
             }
-            st.Stop();
-
-            //Console.WriteLine(st.ElapsedMilliseconds);
-
-            //Console.WriteLine(ticks / (double)st.ElapsedMilliseconds * 1000);
         }
     }
 }
